@@ -4,11 +4,24 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-python-dotenv = "*"
-langchain = "*"
+flask = "*"
+tweepy = "*"
+pylint = "*"
+black = "*"
+isort = "*"
 langchain-openai = "*"
+langchain-community = "*"
+langchain-ollama = "*"
+langchain = "*"
+langchain-tavily = "*"
+python-dotenv = "*"
+
+
 
 [dev-packages]
 
 [requires]
 python_version = "3.10"
+
+[pipenv]
+allow_prereleases = true

@@ -21,6 +21,16 @@ pipenv shell
 python app.py
 ```
 
+### Environment Setup
+```bash
+# Copy environment template and configure your API keys
+cp .env.example .env
+# Edit .env file with your API credentials
+
+# Verify environment setup
+pipenv run python -c "from dotenv import load_dotenv; load_dotenv(); import os; print('✓ Environment loaded')"
+```
+
 ### Code Quality Tools
 ```bash
 # Format code with Black
@@ -57,7 +67,8 @@ pipenv run pytest .
 
 - **chains/**: Custom LangChain sequences for AI processing
   - Three distinct chains: summary, interests, ice breakers
-  - Uses GPT-3.5-turbo with different temperature settings
+  - Uses GPT-3.5-turbo with temperature=0 for deterministic outputs and temperature=1 for creative content
+  - Implements RunnableSequence pattern: PromptTemplate | LLM | OutputParser
 
 - **third_parties/**: External API integrations
   - LinkedIn scraping via Scrapin.io API
@@ -83,7 +94,21 @@ Optional LangSmith tracing:
 ## Development Notes
 
 - The application uses GPT-4o-mini for agents and GPT-3.5-turbo for chains
-- Twitter integration has a mock implementation (`scrape_user_tweets_mock`) for testing
-- Flask runs in debug mode by default on host 0.0.0.0
+- Twitter integration defaults to mock implementation (`scrape_user_tweets_mock`) in `ice_breaker.py:25`
+- Flask runs in debug mode by default on host 0.0.0.0:5000
 - LangChain agents use verbose mode for debugging
+- Output parsing uses Pydantic models with `to_dict()` methods for JSON serialization
+- All chains follow the same pattern: prompt template with format instructions, LLM processing, and structured parsing
 - No unit tests are currently implemented despite pytest being mentioned
+
+## Debugging & Development Tips
+
+```bash
+# Test individual components
+pipenv run python -c "from ice_breaker import ice_break_with; print(ice_break_with('Elon Musk'))"
+
+# Enable LangChain debugging
+export LANGCHAIN_TRACING_V2=true
+export LANGCHAIN_API_KEY=your_key_here
+```
+- I like to eat the pizza.

@@ -27,8 +27,11 @@ python app.py
 cp .env.example .env
 # Edit .env file with your API credentials
 
+# Activate pipenv shell
+pipenv shell
+
 # Verify environment setup
-pipenv run python -c "from dotenv import load_dotenv; load_dotenv(); import os; print('✓ Environment loaded')"
+python -c "from dotenv import load_dotenv; load_dotenv(); import os; print('✓ Environment loaded')"
 ```
 
 ### Code Quality Tools
@@ -82,9 +85,9 @@ pipenv run pytest .
 
 Required environment variables in `.env`:
 - `OPENAI_API_KEY` - OpenAI API for LLM
-- `SCRAPIN_API_KEY` - Scrapin.io for LinkedIn data
+- `PROXYCURL_API_KEY` - Proxycurl for LinkedIn data (note: .env.example references this, not SCRAPIN_API_KEY)
 - `TAVILY_API_KEY` - Tavily for web search
-- `TWITTER_API_KEY`, `TWITTER_API_SECRET`, `TWITTER_ACCESS_TOKEN`, `TWITTER_ACCESS_SECRET` - Optional Twitter API
+- `TWITTER_API_KEY`, `TWITTER_API_KEY_SECRET`, `TWITTER_BEARER_TOKEN`, `TWITTER_ACCESS_TOKEN`, `TWITTER_ACCESS_TOKEN_SECRET` - Optional Twitter API
 
 Optional LangSmith tracing:
 - `LANGCHAIN_TRACING_V2=true`
@@ -93,22 +96,26 @@ Optional LangSmith tracing:
 
 ## Development Notes
 
-- The application uses GPT-4o-mini for agents and GPT-3.5-turbo for chains
-- Twitter integration defaults to mock implementation (`scrape_user_tweets_mock`) in `ice_breaker.py:25`
-- Flask runs in debug mode by default on host 0.0.0.0:5000
-- LangChain agents use verbose mode for debugging
-- Output parsing uses Pydantic models with `to_dict()` methods for JSON serialization
-- All chains follow the same pattern: prompt template with format instructions, LLM processing, and structured parsing
-- No unit tests are currently implemented despite pytest being mentioned
+- **LLM Configuration**: Uses GPT-3.5-turbo for all chains (temperature=0 for deterministic outputs, temperature=1 for creative ice breakers in `chains/custom_chains.py:9-10`)
+- **Twitter Integration**: Defaults to mock implementation (`scrape_user_tweets_mock`) in `ice_breaker.py:25`
+- **Flask Server**: Runs in debug mode by default on host 0.0.0.0:5000 (`app.py:35`)
+- **Agent Architecture**: Uses LangChain ReAct agents with Tavily search for profile discovery
+- **Chain Pattern**: All chains follow RunnableSequence pattern: PromptTemplate | LLM | OutputParser
+- **Output Structure**: Pydantic models (Summary, TopicOfInterest, IceBreaker) with `to_dict()` methods for JSON serialization
+- **Package Management**: Uses Pipfile with Python 3.10 requirement
+- **No Tests**: No unit tests currently implemented despite pytest being referenced
 
 ## Debugging & Development Tips
 
 ```bash
-# Test individual components
-pipenv run python -c "from ice_breaker import ice_break_with; print(ice_break_with('Elon Musk'))"
+# Test individual components in pipenv shell
+pipenv shell
+python -c "from ice_breaker import ice_break_with; print(ice_break_with('Elon Musk'))"
 
-# Enable LangChain debugging
-export LANGCHAIN_TRACING_V2=true
-export LANGCHAIN_API_KEY=your_key_here
+# Enable LangChain debugging (set in .env file)
+# LANGCHAIN_TRACING_V2=true
+# LANGCHAIN_API_KEY=your_key_here
+
+# Test Flask app directly
+python app.py
 ```
-- I like to eat the pizza.

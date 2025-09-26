@@ -6,8 +6,18 @@ load_dotenv()
 
 
 def scrape_linkedin_profile(linkedin_profile_url: str, mock: bool = False):
-    """scrape information from LinkedIn profiles,
-    Manually scrape the information from the LinkedIn profile"""
+    """Scrape information from a LinkedIn profile using Scrapin.io API.
+
+    Args:
+        linkedin_profile_url (str): The full URL of the LinkedIn profile to scrape.
+        mock (bool): If True, uses a mock profile from GitHub Gist instead of
+                     calling the real API. Default is False.
+
+    Returns:
+        dict: Cleaned profile data with empty fields and certifications removed.
+              Contains fields like name, headline, summary, experience, education,
+              skills, and photoUrl.
+    """
 
     if mock:
         linkedin_profile_url = "https://gist.githubusercontent.com/emarco177/859ec7d786b45d8e3e3f688c6c9139d8/raw/32f3c85b9513994c572613f2c8b376b633bfc43f/eden-marco-scrapin.json"

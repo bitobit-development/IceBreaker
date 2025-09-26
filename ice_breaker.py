@@ -18,6 +18,25 @@ from output_parsers import (
 def ice_break_with(
     name: str,
 ) -> Tuple[Summary, TopicOfInterest, IceBreaker, str]:
+    """Generate ice breaker content for a person based on their social media profiles.
+
+    This function orchestrates the entire pipeline:
+    1. Looks up LinkedIn and Twitter profiles for the given name
+    2. Scrapes data from both platforms
+    3. Generates a summary with facts
+    4. Identifies topics of interest
+    5. Creates personalized ice breakers
+
+    Args:
+        name (str): Full name of the person to research.
+
+    Returns:
+        Tuple[Summary, TopicOfInterest, IceBreaker, str]: A tuple containing:
+            - Summary object with profile summary and interesting facts
+            - TopicOfInterest object with topics that might interest the person
+            - IceBreaker object with conversation starters
+            - Profile picture URL string from LinkedIn
+    """
     linkedin_url = linkedin_lookup_agent(name=name)
     linkedin_data = scrape_linkedin_profile(linkedin_profile_url=linkedin_url)
 

@@ -11,11 +11,25 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
+    """Render the main index page.
+
+    Returns:
+        str: Rendered HTML template for the index page.
+    """
     return render_template("index.html")
 
 
 @app.route("/process", methods=["POST"])
 def process():
+    """Process a person's name and generate ice breaker information.
+
+    Accepts a POST request with a 'name' form parameter, then generates
+    a summary, interests, ice breakers, and profile picture URL.
+
+    Returns:
+        dict: JSON response containing summary_and_facts, interests,
+              ice_breakers, and picture_url.
+    """
     name = request.form["name"]
     summary_and_facts, interests, ice_breakers, profile_pic_url = ice_break_with(
         name=name

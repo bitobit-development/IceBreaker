@@ -15,6 +15,17 @@ load_dotenv()
 
 
 def lookup(name: str) -> str:
+    """Look up a person's LinkedIn profile URL using their full name.
+
+    Uses a LangChain ReAct agent with GPT-4o-mini and Tavily search
+    to find the LinkedIn profile page URL for a given person.
+
+    Args:
+        name (str): Full name of the person to look up.
+
+    Returns:
+        str: URL of the person's LinkedIn profile page.
+    """
     llm = ChatOpenAI(
         temperature=0,
         model_name="gpt-4o-mini",

@@ -10,6 +10,13 @@ llm_creative = ChatOpenAI(temperature=1, model_name="gpt-3.5-turbo")
 
 
 def get_summary_chain() -> RunnableSequence:
+    """Create a LangChain sequence to generate a summary and facts about a person.
+
+    Returns:
+        RunnableSequence: Chain that takes LinkedIn information and Twitter posts
+                         as input and returns a Summary object with a short summary
+                         and two interesting facts.
+    """
     summary_template = """
          given the information about a person from linkedin {information}, and twitter posts {twitter_posts} I want you to create:
          1. a short summary
@@ -29,6 +36,13 @@ def get_summary_chain() -> RunnableSequence:
 
 
 def get_interests_chain() -> RunnableSequence:
+    """Create a LangChain sequence to identify topics of interest for a person.
+
+    Returns:
+        RunnableSequence: Chain that takes LinkedIn information and Twitter posts
+                         as input and returns a TopicOfInterest object with 3 topics
+                         that might interest the person.
+    """
     interesting_facts_template = """
          given the information about a person from linkedin {information}, and twitter posts {twitter_posts} I want you to create:
          3 topics that might interest them
@@ -47,6 +61,15 @@ def get_interests_chain() -> RunnableSequence:
 
 
 def get_ice_breaker_chain() -> RunnableSequence:
+    """Create a LangChain sequence to generate creative ice breakers.
+
+    Uses a higher temperature (1.0) for more creative outputs.
+
+    Returns:
+        RunnableSequence: Chain that takes LinkedIn information and Twitter posts
+                         as input and returns an IceBreaker object with 2 creative
+                         conversation starters based on recent activity.
+    """
     ice_breaker_template = """
          given the information about a person from linkedin {information}, and twitter posts {twitter_posts} I want you to create:
          2 creative Ice breakers with them that are derived from their activity on Linkedin and twitter, preferably on latest tweets

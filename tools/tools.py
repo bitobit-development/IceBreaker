@@ -45,7 +45,19 @@ from langchain_tavily import TavilySearch
 
 
 def get_profile_url_tavily(name: str):
-    """Searches for Linkedin or twitter Profile Page."""
+    """Search for a person's LinkedIn or Twitter profile page URL using Tavily.
+
+    Uses the Tavily search API to find social media profiles for a given
+    person's name. This function is typically used as a tool within
+    LangChain agents.
+
+    Args:
+        name (str): The search query, typically a person's full name or
+                   name with "LinkedIn" or "Twitter" appended.
+
+    Returns:
+        str: Search results containing the profile URL(s).
+    """
     search = TavilySearch()
     res = search.run(f"{name}")
     return res

@@ -16,9 +16,19 @@ twitter_client = tweepy.Client(
 
 
 def scrape_user_tweets(username, num_tweets=5):
-    """
-    Scrapes a Twitter user's original tweets (i.e., not retweets or replies) and returns them as a list of dictionaries.
-    Each dictionary has three fields: "time_posted" (relative to now), "text", and "url".
+    """Scrape a Twitter user's original tweets using the Twitter API.
+
+    Fetches the user's original tweets (excluding retweets and replies)
+    and returns them as a structured list.
+
+    Args:
+        username (str): Twitter username (without @ prefix).
+        num_tweets (int): Maximum number of tweets to retrieve. Default is 5.
+
+    Returns:
+        list[dict]: List of tweet dictionaries, each containing:
+                   - 'text': The tweet content
+                   - 'url': Direct URL to the tweet
     """
     user_id = twitter_client.get_user(username=username).data.id
     tweets = twitter_client.get_users_tweets(
@@ -36,10 +46,25 @@ def scrape_user_tweets(username, num_tweets=5):
 
 
 def scrape_user_tweets_mock(username="EdenEmarco177", num_tweets=5):
-    """
-    Scrapes pre made Edens's Github Gist file of tweets and returns them as a list of dictionaries.
-    Each dictionary has three fields: "time_posted" (relative to now), "text", and "url".
-    https://twitter.com/EdenEmarco177
+    """Scrape mock Twitter data from a GitHub Gist for testing purposes.
+
+    Uses a pre-made collection of Eden Marco's tweets from a GitHub Gist
+    instead of calling the real Twitter API. Useful for testing and
+    development without API rate limits.
+
+    Args:
+        username (str): Twitter username to use in generated URLs.
+                       Default is "EdenEmarco177".
+        num_tweets (int): Number of tweets to return (not currently used,
+                         returns all tweets from the gist). Default is 5.
+
+    Returns:
+        list[dict]: List of tweet dictionaries, each containing:
+                   - 'text': The tweet content
+                   - 'url': Direct URL to the tweet
+
+    Note:
+        Source: https://twitter.com/EdenEmarco177
     """
     EDEN_TWITTER_GIST = "https://gist.githubusercontent.com/emarco177/827323bb599553d0f0e662da07b9ff68/raw/57bf38cf8acce0c87e060f9bb51f6ab72098fbd6/eden-marco-twitter.json"
     tweets = requests.get(EDEN_TWITTER_GIST, timeout=5).json()

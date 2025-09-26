@@ -11,6 +11,17 @@ load_dotenv()
 
 
 def lookup(name: str) -> str:
+    """Look up a person's Twitter/X username using their full name.
+
+    Uses a LangChain ReAct agent with GPT-4o-mini and Tavily search
+    to find the Twitter profile and extract the username.
+
+    Args:
+        name (str): Full name of the person to look up.
+
+    Returns:
+        str: Twitter/X username (without @ prefix).
+    """
     llm = ChatOpenAI(temperature=0, model_name="gpt-4o-mini")
     template = """
        given the name {name_of_person} I want you to find a link to their Twitter/ X profile page, and extract from it their username
